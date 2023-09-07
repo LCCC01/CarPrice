@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<link rel="stylesheet" type="text/css" href="/css/meanCarPrice.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<head>
+    <title>Car Price Information</title>
+</head>
+<body>
+<div class="container">
+    <h1>Mean Car Price Information</h1>
+    <div class="mean-info">
+        <p>Fuel Type: <span th:text="${fuelType}"></span></p>
+        <p>Total Mean Price: <span th:text="${totalMeanPrice}"></span></p>
+    </div>
+    <div>
+        <canvas id="yearlyMeanChart"></canvas>
+    </div>
+</div>
+<script th:inline="javascript">
+    /* JavaScript code to create the chart */
+    var yearlyMeanPrice = /*[[${yearlyMeanPrice}]]*/ {};
+
+    var ctx = document.getElementById('yearlyMeanChart').getContext('2d');
+    var chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: Object.keys(yearlyMeanPrice),
+            datasets: [{
+                label: 'Yearly Mean Price',
+                data: Object.values(yearlyMeanPrice),
+                borderColor: 'rgb(75, 192, 192)',
+                borderWidth: 2,
+                fill: false
+            }]
+        },
+        options: {
+            scales: {
+                x: {
+                    type: 'linear',
+                    position: 'bottom',
+                    title: {
+                        display: true,
+                        text: 'Year'
+                    },
+                    ticks: {
+                        stepSize: 1, // Set the step size to 1
+                        beginAtZero: true, // Start the axis at zero
+                        callback: function(value, index, values) {
+                            return value.toString(); // Convert the value to a string without spaces
+                        }
+                    }
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: 'Mean Price'
+                    }
+                }
+            }
+        }
+    });
+</script>
+</body>
+</html>
